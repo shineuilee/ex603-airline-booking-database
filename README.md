@@ -1,10 +1,11 @@
 # ex603-airline-booking-database
 
-EX603 Data and Algorithms for Scalable Systems
+# EX603 Data and Algorithms for Scalable Systems
+* Name: Shin Eui Lee
+# Project Title: Airline Booking and Operation Sytem
+* A relational database managing airline operation including managing flights, passenger reservations and routes. 
 
-Name: Shin Eui Lee
-
-Theme: Airline Booking
+## Theme: Airline Booking
 
   - actor: passangers
   - producer: flights
@@ -13,4 +14,9 @@ Theme: Airline Booking
   - junction: flight_routes
   - metric: fare_paid
     
-What the system does: A relational database for a large-scale application for airline booking 
+* What the system does: A relational database for a large-scale application for airline booking
+
+## Domain Overview
+
+### What This Platform Is
+Th
