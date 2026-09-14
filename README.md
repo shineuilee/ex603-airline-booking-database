@@ -1,7 +1,7 @@
-**ex603-airline-booking-database**
+ex603-airline-booking-database  
 
-EX603 Data and Algorithms for Scalable Systems
-Name: Shin Eui Lee
+EX603 Data and Algorithms for Scalable Systems  
+Name: Shin Eui Lee  
 
 # Project Title: Airline Booking and Operation Sytem
 A relational database managing airline operation including managing flights, passenger reservations and routes. 
