@@ -24,7 +24,7 @@ To support everyday operations, the database answers several key questions. For 
 ## Entity Relationship Diagram (ERD)
 
 ### ERD Image
-![Airline Booking ERD](erd.png)
+[![Airline Booking ERD](erd.png)](erd.png)
 
 ### ERD diagram source
 
