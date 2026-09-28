@@ -156,13 +156,13 @@ Ref: passengers.referred_by > passengers.passenger_id
 
 The database implements a high-performance relational schema for flight operations and reservations built for PostgreSQL 14+:
 
-* passengers (`actor`): Stores customer accounts. Uses an auto-generated identity integer key and an enforced `UNIQUE` constraint on emails, with recursive referral tracking.
-* airports (`catalog`): Master repository of global airports identified by immutable 3-letter IATA codes (`CHAR(3)`).
-* flights (`producer`): Manages aircraft flight legs, schedule timings, and seat capacities with strict chronological and positive-fare constraints.
-* flight_routes (`junction`): Resolves many-to-many associations between flights and airports. Utilizes a composite primary key `(flight_id, airport_code)` to prevent duplicate waypoint entries.
-* bookings (`event`): Immutable transaction ledger linking passengers to specific flights with strict status lifecycles and non-negative fares.
+* passengers (actor): Stores customer accounts. Uses an auto-generated identity integer key and an enforced UNIQUE constraint on emails, with recursive referral tracking.
+* airports (catalog): Master repository of global airports identified by immutable 3-letter IATA codes (CHAR(3)).
+* flights (producer): Manages aircraft flight legs, schedule timings, and seat capacities with strict chronological and positive-fare constraints.
+* flight_routes (junction): Resolves many-to-many associations between flights and airports. Utilizes a composite primary key (flight_id, airport_code) to prevent duplicate waypoint entries.
+* bookings (event): Immutable transaction ledger linking passengers to specific flights with strict status lifecycles and non-negative fares.
 
 ### Key Architectural Decisions
-* **Strict Referential Integrity:** Foreign keys on financial transactions (`bookings`) utilize `ON DELETE RESTRICT` to ensure transaction history and FAA manifests are never purged.
-* **Automated Cleanup for Schedules:** Junction waypoints (`flight_routes`) cascade deletions when a flight record is dropped.
+* **Strict Referential Integrity:** Foreign keys on financial transactions (bookings) utilize ON DELETE RESTRICT to ensure transaction history and FAA manifests are never purged.
+* **Automated Cleanup for Schedules:** Junction waypoints (flight_routes) cascade deletions when a flight record is dropped.
 * **Constraint-First Validation:** Domain checks enforce allowed flight statuses, seat counts, chronological flight timings, and valid waypoint types directly in the schema layer.
