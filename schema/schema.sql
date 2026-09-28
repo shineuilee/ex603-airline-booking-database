@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS airports CASCADE;
 DROP TABLE IF EXISTS passengers CASCADE;
 
 -- -----------------------------------------------------------------
--- 1. passengers — User accounts. Created first because it only points to itself.
+-- 1. passengers — Actor. User accounts. Created first because it only points to itself.
 -- -----------------------------------------------------------------
 CREATE TABLE passengers (
     passenger_id      INTEGER GENERATED ALWAYS AS IDENTITY,
@@ -28,7 +28,7 @@ CREATE TABLE passengers (
 );
 
 -- -----------------------------------------------------------------
--- 2. airports — Airport info and codes. Independent table with no foreign keys.
+-- 2. airports — Catalog. Airport info and codes. Independent table with no foreign keys.
 -- -----------------------------------------------------------------
 CREATE TABLE airports (
     airport_code      CHAR(3)      NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE airports (
 );
 
 -- -----------------------------------------------------------------
--- 3. flights — Flight schedules. Created before routes and bookings.
+-- 3. flights — Producer. Flight schedules. Created before routes and bookings.
 -- -----------------------------------------------------------------
 CREATE TABLE flights (
     flight_id         INTEGER GENERATED ALWAYS AS IDENTITY,
@@ -74,7 +74,7 @@ CREATE TABLE flight_routes (
 );
 
 -- -----------------------------------------------------------------
--- 5. bookings — Event table; Tickets bought by passangers. Depends on both passengers and flights.
+-- 5. bookings — Event table. Tickets bought by passangers. Depends on both passengers and flights.
 -- -----------------------------------------------------------------
 CREATE TABLE bookings (
     booking_id            INTEGER GENERATED ALWAYS AS IDENTITY,
