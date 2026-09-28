@@ -23,11 +23,11 @@ I made the tables in this order because child tables need their parent tables to
 
 | **Foreign Key** | ON DELETE Choice | Reason in One Sentence |
 | :--- | :--- | :--- |
-| **fk_passengers_referrer (passengers.referred_by)** | `ON DELETE SET NULL` | If a user leaves the airline, the person they invited should still keep their account. |
-| **fk_flight_routes_flight (flight_routes.flight_id)** | `ON DELETE CASCADE` | If a flight schedule is removed before it runs, its stops associated should be deleted too. |
-| **fk_flight_routes_airport (flight_routes.airport_code)** | `ON DELETE RESTRICT` | An airport should not be deleted if flights are still scheduled to use it. |
-| **fk_bookings_passenger (bookings.passenger_id)** | `ON DELETE RESTRICT` | A passenger cannot be deleted if they already bought a ticket. |
-| **fk_bookings_flight (bookings.flight_id)** | `ON DELETE RESTRICT` | A flight cannot be deleted if passengers have already booked seats on it. |
+| **fk_passengers_referrer (passengers.referred_by)** | ON DELETE SET NULL | If a user leaves the airline, the person they invited should still keep their account. |
+| **fk_flight_routes_flight (flight_routes.flight_id)** | ON DELETE CASCADE | If a flight schedule is removed before it runs, its stops associated should be deleted too. |
+| **fk_flight_routes_airport (flight_routes.airport_code)** | ON DELETE RESTRICT | An airport should not be deleted if flights are still scheduled to use it. |
+| **fk_bookings_passenger (bookings.passenger_id)** | ON DELETE RESTRICT | A passenger cannot be deleted if they already bought a ticket. |
+| **fk_bookings_flight (bookings.flight_id)** | ON DELETE RESTRICT | A flight cannot be deleted if passengers have already booked seats on it. |
 
 ### Real-World Events and Why Alternatives Do Not Work
 
