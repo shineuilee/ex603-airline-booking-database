@@ -154,15 +154,15 @@ Ref: passengers.referred_by > passengers.passenger_id
 
 ## Schema Design
 
-The database implements a high-performance relational schema for flight operations and reservations built for PostgreSQL 14+:
+The relational database schema for flight operations and reservations built for PostgreSQL 14+.
 
-* **passengers (actor)**: Stores customer accounts. Uses an auto-generated identity integer key and an enforced UNIQUE constraint on emails, with recursive referral tracking.
-* **airports (catalog)**: Master repository of global airports identified by immutable 3-letter IATA codes (CHAR(3)).
-* **flights (producer)**: Manages aircraft flight legs, schedule timings, and seat capacities with strict chronological and positive-fare constraints.
-* **flight_routes (junction)**: Resolves many-to-many associations between flights and airports. Utilizes a composite primary key (flight_id, airport_code) to prevent duplicate waypoint entries.
-* **bookings (event)**: Immutable transaction ledger linking passengers to specific flights with strict status lifecycles and non-negative fares.
+* **passengers (actor)**: Stores customer accounts. Uses an auto-generated identity integer key and an enforced UNIQUE constraint on emails, with members referral tracking.
+* **airports (catalog)**: Stores airport information, using the global 3-letter airport codes (CHAR(3)) as the primary key.
+* **flights (producer)**: Stores flight schedules, seat capacity, ticket prices with basic schedule and fare validation.
+* **flight_routes (junction)**: Resolves many-to-many associations between flights and airports. Utilizes a composite primary key (flight_id, airport_code) to prevent duplicate entries.
+* **bookings (event)**: Stores flight reservations and paid fares, keeping a record of passenger ticket history and standard reservation statuses like confirmed or canceled. 
 
-### Key Architectural Decisions
-* **Strict Referential Integrity:** Foreign keys on financial transactions (bookings) utilize ON DELETE RESTRICT to ensure transaction history and FAA manifests are never purged.
-* **Automated Cleanup for Schedules:** Junction waypoints (flight_routes) cascade deletions when a flight record is dropped.
-* **Constraint-First Validation:** Domain checks enforce allowed flight statuses, seat counts, chronological flight timings, and valid waypoint types directly in the schema layer.
+### Key Design Decisions
+* **Protecting Booking History:** Foreign keys on bookings utilize ON DELETE RESTRICT to ensure passenger reservations and payment records are not accidentally deleted, ensuring booking records stay intact.
+* **Automated Cleanup for Schedules:** Deleting a flight automatically removes its associated route stops in flight_routes using ON DELETE CASCADE.
+* **Data Validation Checks:** CHECK constraints on status values, seat capacity, departures/arrival times so invalid data cannot enter the database.
