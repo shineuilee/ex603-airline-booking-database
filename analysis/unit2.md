@@ -22,7 +22,7 @@ I made the tables in this order because child tables need their parent tables to
 ## 2. Foreign Key Decisions
 
 | **Foreign Key** | ON DELETE Choice | Reason in One Sentence |
-
+| :--- | :--- | :--- |
 | **fk_passengers_referrer (passengers.referred_by)** | `ON DELETE SET NULL` | If a user leaves the airline, the person they invited should still keep their account. |
 | **fk_flight_routes_flight (flight_routes.flight_id)** | `ON DELETE CASCADE` | If a flight schedule is removed before it runs, its stops associated should be deleted too. |
 | **fk_flight_routes_airport (flight_routes.airport_code)** | `ON DELETE RESTRICT` | An airport should not be deleted if flights are still scheduled to use it. |
@@ -73,6 +73,6 @@ I made the tables in this order because child tables need their parent tables to
 
 ## 4. Changes from Unit 1
 
-* I changed IDs to `INTEGER GENERATED ALWAYS AS IDENTITY` to follow the PostgreSQL 14 guide for this class.
+* I changed IDs to **INTEGER GENERATED ALWAYS AS IDENTITY** to follow the PostgreSQL 14 guide for this class.
 * I added a check so arrival time must be after departure time.
-* I added `referred_by` to the passenger table so passengers can refer each other for self-referral.
+* I added **referred_by** to the passenger table so passengers can refer each other for self-referral.
