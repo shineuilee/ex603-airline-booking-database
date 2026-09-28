@@ -87,15 +87,80 @@ Ref: flights.flight_id < bookings.flight_id
 Ref: flights.flight_id < flight_routes.flight_id
 Ref: airports.airport_code < flight_routes.airport_code
 
-## Schema Design & Architecture
+### Updated ERD diagram source (Assignment 2)
+
+// Actor: passengers
+Table passengers {
+  passenger_id integer [pk, increment]
+  first_name varchar(50)
+  middle_name varchar(50)
+  last_name varchar(50)
+  email varchar(250)
+  phone_number varchar(20)
+  registration_date timestamptz
+  referred_by integer
+}
+
+// Producer: flights
+Table flights {
+  flight_id integer [pk, increment]
+  flight_number varchar(10)
+  departure_time timestamptz
+  arrival_time timestamptz
+  base_fare numeric(10,2)
+  total_seats integer
+  is_active boolean
+}
+
+// Event: bookings
+Table bookings {
+  booking_id integer [pk, increment]
+  booking_reference char(6)
+  passenger_id integer
+  flight_id integer
+  seat_number varchar(5)
+  fare_paid numeric(10,2)
+  booking_status varchar(20)
+  ticket_purchased_time timestamptz
+}
+
+// Catalog: airports
+Table airports {
+  airport_code char(3) [pk]
+  airport_name varchar(100)
+  airport_city varchar(100)
+  airport_country varchar(100)
+}
+
+// Junction: flight_routes
+Table flight_routes {
+  flight_id bigint
+  airport_code char(3)
+  point_type varchar(20)
+
+  indexes {
+    (flight_id, airport_code) [pk]
+  }
+}
+
+
+
+// Relationships 
+Ref: passengers.passenger_id < bookings.passenger_id
+Ref: flights.flight_id < bookings.flight_id
+Ref: flights.flight_id < flight_routes.flight_id
+Ref: airports.airport_code < flight_routes.airport_code
+Ref: passengers.referred_by > passengers.passenger_id
+
+## Schema Design
 
 The database implements a high-performance relational schema for flight operations and reservations built for PostgreSQL 14+:
 
-* **passengers (`actor`):** Stores customer accounts. Uses an auto-generated identity integer key and an enforced `UNIQUE` constraint on emails, with recursive referral tracking.
-* **airports (`catalog`):** Master repository of global airports identified by immutable 3-letter IATA codes (`CHAR(3)`).
-* **flights (`producer`):** Manages aircraft flight legs, schedule timings, and seat capacities with strict chronological and positive-fare constraints.
-* **flight_routes (`junction`):** Resolves many-to-many associations between flights and airports. Utilizes a composite primary key `(flight_id, airport_code)` to prevent duplicate waypoint entries.
-* **bookings (`event`):** Immutable transaction ledger linking passengers to specific flights with strict status lifecycles and non-negative fares.
+* passengers (`actor`): Stores customer accounts. Uses an auto-generated identity integer key and an enforced `UNIQUE` constraint on emails, with recursive referral tracking.
+* airports (`catalog`): Master repository of global airports identified by immutable 3-letter IATA codes (`CHAR(3)`).
+* flights (`producer`): Manages aircraft flight legs, schedule timings, and seat capacities with strict chronological and positive-fare constraints.
+* flight_routes (`junction`): Resolves many-to-many associations between flights and airports. Utilizes a composite primary key `(flight_id, airport_code)` to prevent duplicate waypoint entries.
+* bookings (`event`): Immutable transaction ledger linking passengers to specific flights with strict status lifecycles and non-negative fares.
 
 ### Key Architectural Decisions
 * **Strict Referential Integrity:** Foreign keys on financial transactions (`bookings`) utilize `ON DELETE RESTRICT` to ensure transaction history and FAA manifests are never purged.
