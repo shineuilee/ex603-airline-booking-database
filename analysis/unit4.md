@@ -31,11 +31,11 @@
 
 ## 2. Personal Reflection
 
-Working through Unit 4 provided a valuable shift from simply filtering rows to thinking about database execution efficiency and analytical data modeling. In previous assignments, SQL felt primarily like retrieving existing rows using `WHERE`. In this assignment, using GROUP BY, HAVING, and conditional expressions required structuring queries around real business metrics and understanding how PostgreSQL processes data at each stage.
+Working through Unit 4 provided a valuable shift from simply filtering rows to thinking about database execution efficiency and analytical data modeling. In previous assignments, SQL felt primarily like retrieving existing rows using WHERE. In this assignment, using GROUP BY, HAVING, and conditional expressions required structuring queries around real business metrics and understanding how PostgreSQL processes data at each stage.
 
 One important concept I worked through was the distinction between WHERE and HAVING. Understanding that WHERE filters rows before grouping happens, while HAVING filters aggregated values after grouping, made it clear why setting our volume threshold (HAVING COUNT(*) >= 15) had to be handled at the group level. Choosing 15 based on the dataset average of 15.38 bookings helped me see how small sample sizes can easily distort route averages if low-volume groups are not isolated.
 
-Learning single-pass conditional aggregation with `CASE` expressions was another highlight. Previously, I might have considered writing separate queries or subqueries to get total bookings, cancellations, and net revenue, and then joining them. Calculating all three metrics in a single pass over the table is far more efficient and prevents unnecessary table scans. Similarly, using `ROLLUP` demonstrated how SQL can directly deliver hierarchical reporting data—like subtotals and grand totals—without requiring application-level data manipulation. Overall, this assignment helped bridge the gap between technical SQL syntax and meaningful backend data reporting.
+Learning single-pass conditional aggregation with CASE expressions was another highlight. Previously, I might have considered writing separate queries or subqueries to get total bookings, cancellations, and net revenue, and then joining them. Calculating all three metrics in a single pass over the table is far more efficient and prevents unnecessary table scans. Similarly, using ROLLUP demonstrated how SQL can directly deliver hierarchical reporting data—like subtotals and grand totals—without requiring application-level data manipulation. Overall, this assignment helped bridge the gap between technical SQL syntax and meaningful backend data reporting.
 
 ---
 
