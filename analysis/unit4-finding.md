@@ -1,24 +1,15 @@
 # EX603 - Project Assignment 4: From Rows to Insight
 
-### Overview
-An operational audit of all 200 platform booking transactions was conducted to evaluate revenue generation and fulfillment reliability across individual flight routes. Across the platform, routes average 15.38 bookings and $288.23 in gross revenue. However, performance is highly uneven:
+## Airline Booking Finding
 
-* **Top Revenue Producer:** Flight 8 demonstrated strong commercial performance, generating $473.08 across 20 bookings (exceeding platform average revenue by +$184.85) with a very low 5.0% cancellation rate.
-* **Operational Outlier (Flight 11):** Flight 11 shows a severe operational reliability failure. Out of 16 customer bookings, **5 were cancelled**, resulting in an alarming **31.25% failure rate**—more than double the overall platform average.
-* **Zero-Failure Benchmark (Flight 10):** In contrast, Flight 10 completed 100% of its 19 bookings with 0 cancellations, retaining $393.88 in clean net revenue. This demonstrates that high booking volume does not inherently lead to high operational attrition.
+All 200 bookings were checked to find the actual passenger no-show rate. The same definition from Unit 3 was used. A booking was counted as a no-show when the cancellation reason was "Passenger no show." There were 12 no-shows out of 200 bookings, so the overall no-show rate was 6.00%. The previous dashboard had a problem because bookings with blank cancellation reasons were not included in the results.
 
----
+There were also 34 bookings marked as cancelled, which is 17.00% of all bookings. However, not all cancellations were passenger no-shows. The cancellation reasons included 12 passenger no-shows, 8 passenger cancellations, 7 payment failures, and 7 flight cancellations. The 188 bookings from the corrected Unit 3 query were bookings that were not passenger no-shows. This does not mean all 188 bookings were completed flights.
 
-### Why It Matters
-A failure rate exceeding 31% on Flight 11 presents substantial financial, operational, and customer retention risks:
+Based on the results, Flight IDs 2, 3, and 1 should be reviewed first.
 
-1. **Unrealized Revenue:** Flight 11 appears healthy in terms of initial customer interest (16 bookings), but nearly one-third of its potential revenue fails to convert due to cancellations.
-2. **Customer Friction and Churn:** Repeated cancellations on a specific route create dissatisfaction and damage platform trust, making customers less likely to book repeat travel through our booking channels.
-3. **Operational Imbalance:** While high-performing routes like Flight 8 and Flight 10 are running smoothly, operational friction is concentrated heavily in a single route corridor.
+Flight ID 2 had 3 no-shows out of 16 bookings (18.75%), which was the highest number of no-shows among all flights. Flight ID 3 had 2 no-shows out of 13 bookings (15.38%). Flight ID 1 had 1 no-show out of 11 bookings (9.09%). All three flights had higher no-show rates than the 5.67% combined rate for flights with at least 10 bookings.
 
----
+Flight ID 4 also had a high no-show rate of 16.67%, but it only had 6 bookings. Because the number of bookings was small, it was not selected as one of the first three flights to investigate.
 
-### Recommended Action Plan
-1. **Root-Cause Investigation for Flight 11:** Meet with the dispatch and carrier coordination teams to determine why Flight 11 experiences repeated scheduling interruptions and partner cancellations compared to other routes.
-2. **Payment Workflow Review:** Verify whether regional booking methods or payment processing issues are disproportionately causing transaction drops on Flight 11.
-3. **Fleet and Schedule Optimization:** If the operational bottlenecks on Flight 11 cannot be resolved in the short term, evaluate reallocating capacity toward high-reliability, top-earning routes like Flight 8 and Flight 10 to protect net revenue and maintain customer satisfaction.
+The booking dates and countries for Flight IDs 2, 3, and 1 should be checked more closely. More booking records over a longer period would also help determine whether the same problems happen regularly. These results show which flights may need more attention, but they do not prove that the flights themselves caused the passenger no-shows.
