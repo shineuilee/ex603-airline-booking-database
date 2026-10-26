@@ -4,8 +4,13 @@
 -- Dataset: airline.sql 
 -- =============================================================================
 
--- Task 4.2 Part A: How many bookings and no-shows per flight?
+-------------------------------------------------------------------
+-- Task 4.2.Part A: How many bookings and no-shows per flight?
+-- What is the total volume, cancellation count, cancellation rate (failure rate %), 
+-- and completed revenue for each flight (producer) computed in a single table pass?
 -- Both counts come from one grouped query with CASE.
+-- -----------------------------------------------------------------------------
+
 SELECT
 	flight_id,
 	COUNT(*) AS total_bookings,
@@ -21,8 +26,11 @@ FROM bookings
 GROUP BY flight_id
 ORDER BY no_shows DESC, no_show_rate DESC, flight_id;
 
--- Task 4.2 Part B: What are regional totals and all-region total?
+-- -----------------------------------------------------------------------------
+-- Task 4.2.Part B: What are regional totals and all-region total?
 -- No flight detail rows; ROLLUP makes the country and grand totals.
+-- -----------------------------------------------------------------------------
+
 SELECT
 	CASE
 		WHEN GROUPING(booking_country) = 1 THEN 'All regions'
@@ -45,8 +53,11 @@ FROM bookings
 GROUP BY ROLLUP (booking_country)
 ORDER BY GROUPING(booking_country), booking_country;
 
--- Task 4.2 Part C: What is the no-show rate for busy flights?
+-- -----------------------------------------------------------------------------
+-- Task 4.2.Part C: What is the no-show rate for busy flights?
 -- Step 1 groups by flight. Step 2 keeps flights with 10+ bookings.
+-- -----------------------------------------------------------------------------
+
 WITH flight_summary AS (
 	SELECT
 		flight_id,
