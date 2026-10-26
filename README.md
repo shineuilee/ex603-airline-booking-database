@@ -166,3 +166,13 @@ The relational database schema for flight operations and reservations built for 
 * **Protecting Booking History:** Foreign keys on bookings utilize ON DELETE RESTRICT to ensure passenger reservations and payment records are not accidentally deleted, ensuring booking records stay intact.
 * **Automated Cleanup for Schedules:** Deleting a flight automatically removes its associated route stops in flight_routes using ON DELETE CASCADE.
 * **Data Validation Checks:** CHECK constraints on status values, seat capacity, departures/arrival times so invalid data cannot enter the database.
+
+## Unit 4: Booking Fare and No-Show Analysis
+
+Used the same airline booking data from Unit 3. The metric is fare_paid, the actor is passenger_id, and the producer is flight_id. booking_country was used as a region label. For this report, failure means a booking with cancellation_reason = 'Passenger no show'.
+
+- queries/unit4/q4_1.sql: Overall booking and fare summary, actual no-show rate, counts by flight, HAVING, and flight plus country results.
+- queries/unit4/q4_2.sql: Total bookings and no-shows in one query, country subtotals and platform grand total, and a CTE baseline for busy flights.
+- analysis/unit4.md: Explanations for Tasks 4.1 and 4.2 and the reflection.
+- analysis/unit4-finding.md: Main finding and which flight IDs recommended for reviewing.
+- screenshots/unit4: Full screenshots from pgAdmin showing all query and its result together.
