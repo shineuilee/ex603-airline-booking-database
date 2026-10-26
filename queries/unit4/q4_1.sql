@@ -4,7 +4,12 @@
 -- Dataset: airline.sql 
 -- =============================================================================
 
--- Task 4.1 Q1: What are the fare summary numbers for all bookings?
+-- -----------------------------------------------------------------------------
+-- Task 4.1.Q1: What are the fare summary numbers for all bookings?
+-- What are the baseline metrics (total count, sum, average, min, max fare paid, 
+-- and unique passengers) across all booking events on the platform?
+-- -----------------------------------------------------------------------------
+
 SELECT
 	COUNT(*) AS total_bookings,
 	COUNT(fare_paid) AS fare_count,
@@ -15,7 +20,12 @@ SELECT
 	COUNT(DISTINCT passenger_id) AS passenger_count
 FROM bookings;
 
--- Task 4.1 Q2: How many bookings and average fare for each flight?
+-- -----------------------------------------------------------------------------
+-- Task 4.1.Q2: How many bookings and average fare for each flight?
+-- How do booking volume and average fare paid vary across individual flights (producers),
+-- ordered from highest activity to lowest?
+-- -----------------------------------------------------------------------------
+
 SELECT
 	flight_id,
 	COUNT(*) AS booking_count,
@@ -24,8 +34,12 @@ FROM bookings
 GROUP BY flight_id
 ORDER BY booking_count DESC, flight_id;
 
--- Task 4.1 Q3: Which flights have at least 10 bookings?
--- I compare only flights with 10 or more bookings.
+-- -----------------------------------------------------------------------------
+-- Task 4.1.Q3: Which flights have at least 10 bookings?
+-- Which flights (producers) have enough volume (compare only flights with 10 or more bookings) 
+-- for their average metrics to be statistically representative?
+-- -----------------------------------------------------------------------------
+
 SELECT
 	flight_id,
 	COUNT(*) AS booking_count,
@@ -43,8 +57,12 @@ GROUP BY flight_id
 HAVING COUNT(*) >= 10
 ORDER BY booking_count DESC, flight_id;
 
--- Task 4.1 Q4: How do bookings differ by flight and country?
--- booking_country is the region field available here.
+-- -----------------------------------------------------------------------------
+-- Task 4.1.Q4: How do bookings differ by flight and country? (Producer and Region)
+-- How does booking volume and average fare vary across both producer (flight) 
+-- and geographic region (booking_country)?
+-- -----------------------------------------------------------------------------
+
 SELECT
 	flight_id,
 	booking_country AS region,
