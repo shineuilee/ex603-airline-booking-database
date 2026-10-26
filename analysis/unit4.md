@@ -1,57 +1,61 @@
 # EX603 - Project Assignment 4: From Rows to Insight
 
-## Task 4.1 and Task 4.2, plus the reflection
+## Task 4.1: Measure the platform
 
-### 1.1 Platform Baseline Statistics (Task 4.1.1)
-* **Total Volume:** The dataset contains exactly 200 booking transactions across all records.
-* **Financial Overview:** Total gross revenue generated across the entire platform is $3,747.01, with an average ticket fare of $18.74. Fares range from a minimum of $0.00 to a maximum of $70.86. The $0.00 entries represent cancelled bookings where the fare was either waived or fully credited.
-* **Customer Distribution:** A total of 30 unique passengers (passenger_id) accounted for these 200 bookings, indicating substantial repeat reservation activity across the customer base.
+The bookings table was used for this assignment. Each booking is an event, flight_id is the producer, and passenger_id is the actor. The numeric metric is fare_paid. The booking_country column was used for the region because it contains the country information in this dataset. However, it does not show the exact flight route or where a problem happened.
 
-### 1.2 Per-Producer Activity & Volume Threshold (Task 4.1.2 & 4.1.3)
-* Booking volume is unevenly distributed among the 13 distinct flights (flight_id). Flight 6 recorded the highest volume with 21 bookings, followed closely by Flight 8 with 20 bookings and Flight 10 with 19 bookings.
-* To avoid statistical distortion from low-volume routes, I applied a threshold filter using HAVING COUNT(*) >= 15. 
-* Across the 13 flights, the average volume per route is approximately 15.38 bookings. Flights with fewer than 15 bookings (such as Flight 4 with only 6 bookings) have small sample sizes where a single extreme ticket price can heavily bias the calculated average fare. 
-* Filtering with COUNT(*) >= 15 isolated the 8 most active flights (Flights 6, 8, 10, 11, 12, 5, 2, and 7), providing a more reliable foundation for performance comparison.
+All 200 bookings were checked. There are 30 different passengers, and the total fare amount is $3,628.19. The average fare is $18.14, with a minimum of $0.00 and a maximum of $70.86. The $0.00 fares were also checked because they could be a data issue. All 34 cancelled bookings have a fare of $0.00 in this dataset. This may be normal for cancelled bookings, but the company's payment and refund rules would need to be checked before using these numbers in a real financial report.
 
-### 1.3 Multi-dimensional Grouping & Hierarchical ROLLUP (Task 4.1.4 & 4.2.2)
-* Grouping across both flight and booking country (GROUP BY flight_id, booking_country) split the platform's activity into 62 distinct sub-segments.
-* Implementing ROLLUP(flight_id, booking_country) generated a structured analytical hierarchy in a single execution pass. Rather than running separate queries to compute route-country intersections, individual route totals, and platform-wide sums, ROLLUP generated:
-  1. The 62 granular flight-country combinations.
-  2. Subtotals for each flight route (where region is NULL).
-  3. A platform grand total row (where both producer_id and region are NULL), confirming the 200 bookings and $3,747.01 total revenue.
+The most bookings were recorded for Flight ID 6 with 21 bookings, followed by Flight ID 8 with 20 and Flight ID 10 with 19. A minimum of 10 bookings was selected for the HAVING condition. This helps avoid comparing flights with very few bookings because even one no-show can make the percentage look high. Ten bookings is still a small sample, but it was used as a starting point. A total of 12 flights meet this condition, with 194 bookings altogether.
 
-### 1.4 Single-Pass Failure Analysis & Net Revenue (Task 4.2.1)
-* Using conditional aggregation inside aggregate functions (COUNT(CASE WHEN booking_status = 'cancelled' THEN 1 END)), I calculated completed versus cancelled bookings and net revenue without repeatedly scanning the table.
-* The failure rate varies dramatically across flights:
-  * **Critical Outlier:** Flight 11 logged 16 bookings, but 5 were cancelled, yielding an exceptionally high failure rate of 31.25%.
-  * **Top Reliability:** Flight 10 processed 19 bookings with 0 cancellations (0.00% failure rate), capturing $393.88 in net revenue.
-  * **Top Commercial Producer:** Flight 8 generated $473.08 in gross revenue with only 1 cancellation (5.00% failure rate), retaining $447.85 in net revenue.
+If the minimum was changed from 10 to 15 bookings, some flights would be excluded. For example, Flights 1 and 3 would not be included even though their no-show rates are higher than the overall rate. This shows how changing the minimum booking count can affect which flights are selected for further review.
+
+The data was also grouped by flight_id and booking_country to compare bookings across two categories. This produced 62 flight-country groups. The results show how booking activity and average fares differ depending on the flight and booking country.
+
+These results would be useful for the airline operations manager when deciding which flights need more attention. However, the average fare does not show how much individual ticket prices differ, and the total booking count does not explain the reasons behind cancellations or no-shows. More information about cancellation reasons, booking dates, and booking countries would be needed. A longer period of data would also help determine whether these problems happen regularly.
+
+
+## Task 4.2: Build the breakdown leadership asked for
+
+### Part A: Conditional Aggregation
+Two questions were answered in the same query: How many total bookings does each flight have, and how many of those bookings were passenger no-shows?
+
+COUNT(*) was used to count all bookings, while SUM with CASE WHEN was used to count only the passenger no-shows. Both results were calculated together without using a WHERE clause to remove other bookings.
+
+The results show that Flight ID 2 had 3 no-shows out of 16 bookings (18.75%), and Flight ID 3 had 2 no-shows out of 13 bookings (15.38%). These flights had higher no-show rates than the overall platform rate of 6.00%.
+
+This makes it easier to compare the total bookings and no-shows for each flight without running separate queries.
+
+### Part B: Regional Subtotals and Grand Total
+
+The regional director needs the country totals instead of the detailed results for every flight. ROLLUP was used to show the booking totals and no-shows for each country, along with the overall platform total.
+
+The rows marked "Regional subtotal" show the results for Japan, Korea, Singapore, Thailand, and Vietnam. The row marked "Grand total" shows the combined results for the entire platform.
+
+The grand total includes 200 bookings and 12 passenger no-shows, giving an overall no-show rate of 6.00%.
+
+The country totals help the regional director see which countries may need more attention. The grand total shows the overall no-show rate for the whole platform. This helps leadership decide whether the problem should be reviewed in a specific country or across the entire airline.
+
+### Part C: CTE Analysis Pipeline
+
+The purpose of this query was to answer one question: What is the combined no-show rate for flights with at least 10 bookings?
+
+A CTE was used to calculate the total bookings and passenger no-shows for each flight first. After that, the second part of the query selected only flights with 10 or more bookings and calculated the combined results.
+
+A total of 12 flights met this condition, with 194 bookings and 11 passenger no-shows. The combined no-show rate was 5.67%.
+
+The rate was calculated by dividing the total number of no-shows by the total number of bookings, instead of averaging each flight's individual percentage. This is important because some flights have more bookings than others.
+
+This baseline can be used to compare higher-volume flights and identify which ones may need further investigation.
 
 ---
 
-## 2. Personal Reflection
+## Reflection
 
-Working through Unit 4 provided a valuable shift from simply filtering rows to thinking about database execution efficiency and analytical data modeling. In previous assignments, SQL felt primarily like retrieving existing rows using WHERE. In this assignment, using GROUP BY, HAVING, and conditional expressions required structuring queries around real business metrics and understanding how PostgreSQL processes data at each stage.
+Before Unit 4, most SQL practice was about finding certain rows using SELECT and WHERE. In this assignment, the focus was different. The data was grouped to compare flight activity, and HAVING was used to keep flights with at least 10 bookings. This made the results easier to compare, although 10 bookings is still a small sample.
 
-One important concept I worked through was the distinction between WHERE and HAVING. Understanding that WHERE filters rows before grouping happens, while HAVING filters aggregated values after grouping, made it clear why setting our volume threshold (HAVING COUNT(*) >= 15) had to be handled at the group level. Choosing 15 based on the dataset average of 15.38 bookings helped me see how small sample sizes can easily distort route averages if low-volume groups are not isolated.
+Conditional aggregation was one of the most useful parts. COUNT(*) showed the total bookings, while SUM with CASE WHEN counted passenger no-shows in the same query. With two separate filtered queries, the results would have to be matched by flight ID. That could take extra time and make it easier to miss something. For a table with one million rows, running separate queries may also repeat a lot of database work. One conditional aggregation query can calculate both numbers together.
 
-Learning single-pass conditional aggregation with CASE expressions was another highlight. Previously, I might have considered writing separate queries or subqueries to get total bookings, cancellations, and net revenue, and then joining them. Calculating all three metrics in a single pass over the table is far more efficient and prevents unnecessary table scans. Similarly, using ROLLUP demonstrated how SQL can directly deliver hierarchical reporting data—like subtotals and grand totals—without requiring application-level data manipulation. Overall, this assignment helped bridge the gap between technical SQL syntax and meaningful backend data reporting.
+ROLLUP was helpful because it showed country subtotals and one platform total without separate queries. The CTE was useful for breaking the calculation into two steps. First, bookings and no-shows were counted for each flight. Then only flights with at least 10 bookings were included in the baseline. This assignment showed how SQL results can help an operations manager decide which flights need more review.
 
 ---
-
-## 3. Query Catalogue & Screenshot Index
-
-| Requirement | Query File | Description | Screenshot Reference |
-| :--- | :--- | :--- | :--- |
-| **Task 4.1.1** | queries/unit4/q4_1.sql | Platform Baseline Statistics | screenshots/unit4/task4.1.1.png |
-| **Task 4.1.2** | queries/unit4/q4_1.sql | Per-Producer Activity & Average Fare | screenshots/unit4/task4.1.2.png |
-| **Task 4.1.3** | queries/unit4/q4_1.sql | Volume Filtering (HAVING >= 15) | screenshots/unit4/task4.1.3.png |
-| **Task 4.1.4** | queries/unit4/q4_1.sql | Multi-dimensional Grouping (Flight & Region) | screenshots/unit4/task4.1.4.png |
-| **Task 4.2.1** | queries/unit4/q4_2.sql | Single-Pass Cancellation Rate & Net Revenue | screenshots/unit4/task4.2.1.png |
-| **Task 4.2.2** | queries/unit4/q4_2.sql | Hierarchical Aggregation with ROLLUP | screenshots/unit4/task4.2.2.png |
-| **Task 4.2.3** | queries/unit4/q4_2.sql | CTE Pipeline Comparing Producers to Baseline | screenshots/unit4/task4.2.3.png |
-
-> *\*Note on Task 4.2.3 Screen Captures:*  
-> Because the CTE pipeline query is quite lengthy, the main capture (task4.2.3.png) shows the active query execution environment. For full visibility without editor height constraints, please refer to:
-> - screenshots/task4.2.3_query.png: Displays the complete, uncut SQL query code.
-> - screenshots/task4.2.3_output.png: Displays the full Data Output result table.
