@@ -152,6 +152,15 @@ Ref: flights.flight_id < flight_routes.flight_id
 Ref: airports.airport_code < flight_routes.airport_code
 Ref: passengers.referred_by > passengers.passenger_id
 
+## Database Schema (DDL)
+
+### Database Schema (DDL)
+
+The database schema and reference dataset were
+provided in Unit 3.
+
+[View the Database Schema and Reference Dataset](schema/airline.sql)
+
 ## Schema Design
 
 The relational database schema for flight operations and reservations built for PostgreSQL 14+.
@@ -212,3 +221,7 @@ This presentation demonstrates SQL window functions, key findings,
 business recommendations, and limitations of the analysis.
 
 [Watch the Final Project Presentation](https://bostonu.zoom.us/rec/share/ay89Ow0DyrpECHam-6wL9QKON4oOXoIMwS12PG9D6rmd17TE7hdp1EKwtJGVVBbJ.JBpUI3jn0K41bYV-)
+
+createdb ex603_airline
+psql -d ex603_airline -f schema/airline.sql
+psql -d ex603_airline -f queries/unit6/q6_1.sql
