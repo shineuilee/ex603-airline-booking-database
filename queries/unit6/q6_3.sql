@@ -4,9 +4,12 @@
 -- for each flight?
 --
 -- Tie policy:
--- ROW_NUMBER returns at most three bookings.
--- Tied fares are ordered by booking_id to
--- provide a deterministic result.
+-- ROW_NUMBER returns at most three bookings per flight
+-- to maintain a consistent dashboard display size.
+-- If fares are tied at third place, the booking with
+-- the lower booking_id is prioritized, and additional
+-- tied bookings are excluded to maintain the limit.
+-- This provides a deterministic result.
 -- -----------------------------------------------------------------------------
 
 WITH ranked_bookings AS (
