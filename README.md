@@ -205,3 +205,10 @@ Used the same airline booking data from previous units to analyze individual boo
 - Expand historical data coverage and improve the collection of flight departure and no-show occurrence timestamps.
 
 Additional findings, supporting SQL queries, and detailed recommendations are available in the [Unit 6 Closing Memo](analysis/unit6-finding.md).
+
+## Final Project Video Presentation
+
+This presentation demonstrates SQL window functions, key findings,
+business recommendations, and limitations of the analysis.
+
+[Watch the Final Project Presentation]([YOUR_VIDEO_URL](https://bostonu.zoom.us/rec/share/ay89Ow0DyrpECHam-6wL9QKON4oOXoIMwS12PG9D6rmd17TE7hdp1EKwtJGVVBbJ.JBpUI3jn0K41bYV-))
