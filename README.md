@@ -196,7 +196,20 @@ The relational database schema for flight operations and reservations built for 
 
 The following catalogue summarizes the SQL queries developed throughout this project, the business questions they address, and links to the corresponding SQL files.
 
-### Unit 3
+### Unit 3: SQL Fundamentals and Query Correction
+
+| Task | Query | Business Question |
+| --- | --- | --- |
+| 3.1 A | [Active High-Capacity Flights](queries/unit3/q3_1.sql) | Which active flights have a seat capacity of at least 180? |
+| 3.1 B | [Booking Status Identification](queries/unit3/q3_1.sql) | What booking statuses exist in the database? |
+| 3.1 C – Part 1 | [Fare Range Filtering](queries/unit3/q3_1.sql) | Which bookings have fares between 20 and 40? |
+| 3.1 C – Part 2 | [Booking Country Filtering](queries/unit3/q3_1.sql) | Which bookings were made in Korea or Japan? |
+| 3.1 D – Part 1 | [Flight Number Pattern Matching](queries/unit3/q3_1.sql) | Which flights have flight numbers beginning with VN20? |
+| 3.1 D – Part 2 | [Missing Cancellation Reasons](queries/unit3/q3_1.sql) | How can missing cancellation reasons be displayed clearly in operational reports? |
+| 3.1 E | [Fare Calculation and Classification](queries/unit3/q3_1.sql) | What is the calculated total fare for each booking, and how can bookings be classified by fare level? |
+| 3.2 Part A | [NULL Handling and Booking Counts](queries/unit3/q3_2.sql) | How can bookings not identified as passenger no-shows be counted correctly without unintentionally excluding NULL cancellation reasons? |
+| 3.2 Part B | [Calculated Fare Filtering](queries/unit3/q3_2.sql) | How can bookings with calculated total fares above 30 be identified correctly without referencing an unavailable SELECT alias? |
+| 3.3 | [Disputed Booking Identification](queries/unit3/q3_3.sql) | Which passengers have at least one disputed booking, and how can they be identified using different SQL approaches? |
 
 ### Unit 4
 
