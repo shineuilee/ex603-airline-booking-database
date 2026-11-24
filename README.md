@@ -17,9 +17,11 @@ What the system does: A relational database for a large-scale application for ai
 
 ## Domain Overview
 
-This platform is an airline booking system where passengers can sign up, search for flights, book seats, and manage their reservations. Behind the scenes, it helps the airline organize its daily operations by scheduling flight times, connecting flights to departure and arrival airports, and preventing planes from being overbooked. The system keeps all of this information in one place so the company always knows who is flying and how much they paid.
+This platform is an airline booking system designed to help passengers sign up, search for flights, book seats, and manage their reservations. Behind the scenes, it supports airline operations by organizing flight information, airport connections, seat capacity, and available flight services. The system keeps this information in one place so the company can track passenger bookings, reservation statuses, and recorded fares.
 
-To support everyday operations, the database answers several key questions. For flight tracking, it shows which flights are arriving at or departing from a specific airport and their scheduled times. For customer and revenue management, it helps staff quickly see who is booked on each flight, how many open seats remain, and how much money each flight has generated from ticket sales.
+To support everyday operations, the database answers several key business questions. For flight management, it helps identify which airports and services are associated with each flight. For customer and revenue management, it helps staff determine who is booked on each flight, how many bookings each flight has received, and how much recorded fare each flight has generated.
+
+The database also supports business performance analysis by identifying booking trends, comparing individual fares with flight averages, ranking flights by booking volume, and examining passenger no-show patterns over time. One of the main business questions is whether the passenger no-show problem is getting better or worse and what actions the team should take next quarter to improve operational performance.
 
 ## Entity Relationship Diagram (ERD)
 
@@ -154,12 +156,26 @@ Ref: passengers.referred_by > passengers.passenger_id
 
 ## Database Schema (DDL)
 
-### Database Schema (DDL)
+The ERD above represents the original database design developed in Assignments 1 and 2. Beginning in Unit 3, the SQL analyses use the instructor-provided reference schema and dataset, which differ slightly from the original design.
 
-The database schema and reference dataset were
-provided in Unit 3.
+The database schema and reference dataset were provided in Unit 3. The SQL file contains the table definitions, primary and foreign keys, constraints, and sample data used throughout this project.
 
 [View the Database Schema and Reference Dataset](schema/airline.sql)
+
+### Table Overview
+
+The reference database consists of six related tables that support airline booking operations and business analysis.
+
+| Table | Description |
+| --- | --- |
+| `passengers` | Stores passenger information, registration details, account status, and referral relationships. |
+| `flights` | Stores flight information, including flight numbers, origin countries, seat capacity, and active status. |
+| `bookings` | Stores individual booking records, including passenger and flight IDs, booking timestamps, fares, booking statuses, and cancellation reasons. |
+| `airports` | Stores airport identifiers, IATA codes, and airport names. |
+| `flight_routes` | Connects flights to airports and records the effective dates of those relationships. |
+| `flight_services` | Stores the service codes associated with each flight. |
+
+The `bookings`, `flights`, and `passengers` tables are the primary tables used in the SQL analyses. They support booking volume analysis, fare comparisons, passenger behavior analysis, flight rankings, and passenger no-show monitoring.
 
 ## Schema Design
 
@@ -222,6 +238,33 @@ business recommendations, and limitations of the analysis.
 
 [Watch the Final Project Presentation](https://bostonu.zoom.us/rec/share/ay89Ow0DyrpECHam-6wL9QKON4oOXoIMwS12PG9D6rmd17TE7hdp1EKwtJGVVBbJ.JBpUI3jn0K41bYV-)
 
+## How to Run It
+
+### Prerequisites
+
+- PostgreSQL installed
+- Access to the PostgreSQL command-line tools (`createdb` and `psql`)
+
+Run the following commands from the root directory of this repository.
+
+### Step 1: Create the Database
+
+```bash
 createdb ex603_airline
+```
+
+### Step 2: Create the Schema and Load the Reference Dataset
+
+```bash
 psql -d ex603_airline -f schema/airline.sql
+```
+
+### Step 3: Execute an Analysis Query
+
+For example, to execute the Task 6.1 queries:
+
+```bash
 psql -d ex603_airline -f queries/unit6/q6_1.sql
+```
+
+Other SQL queries can be executed by replacing the file path with the desired query file.
