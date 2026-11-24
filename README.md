@@ -211,7 +211,17 @@ The following catalogue summarizes the SQL queries developed throughout this pro
 | 3.2 Part B | [Calculated Fare Filtering](queries/unit3/q3_2.sql) | How can bookings with calculated total fares above 30 be identified correctly without referencing an unavailable SELECT alias? |
 | 3.3 | [Disputed Booking Identification](queries/unit3/q3_3.sql) | Which passengers have at least one disputed booking, and how can they be identified using different SQL approaches? |
 
-### Unit 4
+### Unit 4: From Rows to Insight
+
+| Task | Query | Business Question |
+| --- | --- | --- |
+| 4.1 Q1 | [Overall Booking and Fare Summary](queries/unit4/q4_1.sql) | What are the platform's overall booking volume, fare statistics, and number of unique passengers? |
+| 4.1 Q2 | [Booking Volume and Average Fare by Flight](queries/unit4/q4_1.sql) | How do booking volume and average fare vary across flights? |
+| 4.1 Q3 | [High-Volume Flight Analysis](queries/unit4/q4_1.sql) | Which flights have at least 10 bookings, and what are their average fares and no-show rates? |
+| 4.1 Q4 | [Flight and Regional Booking Analysis](queries/unit4/q4_1.sql) | How do booking volume, average fares, and no-show counts vary by flight and booking country? |
+| 4.2 Part A | [Flight-Level No-show Analysis](queries/unit4/q4_2.sql) | How many bookings and passenger no-shows does each flight have, and which flights have the highest no-show rates? |
+| 4.2 Part B | [Regional and Platform-Level Summary](queries/unit4/q4_2.sql) | How do booking volume and no-show rates vary across regions and the platform as a whole? |
+| 4.2 Part C | [No-show Baseline for Busy Flights](queries/unit4/q4_2.sql) | What is the combined passenger no-show rate for flights with at least 10 bookings? |
 
 ### Unit 5
 
