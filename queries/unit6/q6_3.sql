@@ -134,7 +134,7 @@ FROM monthly_comparison
 ORDER BY booking_month;
 
 -- -----------------------------------------------------------------------------
--- Task 6.3 Part B: Supporting Analysis 1
+-- Task 6.3: Supporting Analysis 1
 -- Monthly No-show Rate
 -- Is the passenger no-show rate improving
 -- or worsening over time?
@@ -210,7 +210,7 @@ FROM rate_comparison
 ORDER BY booking_month;
 
 -- -----------------------------------------------------------------------------
--- Task 6.3 Part B: Supporting Analysis 2
+-- Task 6.3: Supporting Analysis 2
 -- Quarterly No-show Rate
 -- How does the no-show rate change across quarters?
 -- Does the no-show rate show a clearer trend
@@ -272,7 +272,7 @@ FROM rate_comparison
 ORDER BY booking_quarter;
 
 -- -----------------------------------------------------------------------------
--- Task 6.3 Part B: Supporting Analysis 3
+-- Task 6.3: Supporting Analysis 3
 -- Data Coverage and Limitations
 -- What is the available data coverage?
 -- Is there sufficient evidence to establish
