@@ -192,6 +192,39 @@ The relational database schema for flight operations and reservations built for 
 * **Automated Cleanup for Schedules:** Deleting a flight automatically removes its associated route stops in flight_routes using ON DELETE CASCADE.
 * **Data Validation Checks:** CHECK constraints on status values, seat capacity, departures/arrival times so invalid data cannot enter the database.
 
+## Query Catalogue
+
+The following catalogue summarizes the SQL queries developed throughout this project, the business questions they address, and links to the corresponding SQL files.
+
+### Unit 3
+
+### Unit 4
+
+### Unit 5
+
+### Unit 6: Window Functions and Analytics
+
+| Task | Query | Business Question |
+| --- | --- | --- |
+| 6.1 Q1 | [Flight Average Fare](queries/unit6/q6_1.sql) | Which individual booking fares are unusually high or low compared with their flight's average fare? |
+| 6.1 Q2 | [Flight Rankings](queries/unit6/q6_1.sql) | Which flights receive the most bookings, and how do different ranking methods handle ties? |
+| 6.1 Q3 | [Flight Performance Bands](queries/unit6/q6_1.sql) | How can flights be divided into four groups based on booking volume, and how are tied flights handled? |
+| 6.2 Part A | [Previous and Next Booking Fares](queries/unit6/q6_2.sql) | How do fares change between consecutive bookings for the same flight? |
+| 6.2 Part B | [Running Total and Moving Average](queries/unit6/q6_2.sql) | How do cumulative recorded fares and recent average fares change over time? |
+| 6.2 Part C | [Booking Activity Gaps](queries/unit6/q6_2.sql) | Which flights experience extended periods without recorded bookings? |
+| 6.3 Part A | [Top Three Booking Fares](queries/unit6/q6_3.sql) | Which three bookings have the highest fares for each flight? |
+| 6.3 Part B | [Month-over-Month Comparison](queries/unit6/q6_3.sql) | How do monthly booking volume and recorded fares change compared with the previous month? |
+| Supporting Analysis 1 | [Monthly No-show Rate](queries/unit6/q6_3.sql) | Is the monthly passenger no-show rate improving or worsening? |
+| Supporting Analysis 2 | [Quarterly No-show Rate](queries/unit6/q6_3.sql) | Does quarterly reporting reveal a clearer trend in passenger no-show performance? |
+| Supporting Analysis 3 | [Data Coverage](queries/unit6/q6_3.sql) | What historical data is available, and is it sufficient to assess sustained improvement? |
+
+## Technical Highlights
+
+## Findings and Recommendations
+
+## Limitations and Future Improvements
+
+
 ## Unit 4: Booking Fare and No-Show Analysis
 
 Used the same airline booking data from Unit 3. The metric is fare_paid, the actor is passenger_id, and the producer is flight_id. booking_country was used as a region label. For this report, failure means a booking with cancellation_reason = 'Passenger no show'.
