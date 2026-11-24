@@ -1,19 +1,19 @@
 EX603 Data and Algorithms for Scalable Systems  
 Name: Shin Eui Lee  
 
-# Project Title: Airline Booking and Operation Sytem
-A relational database managing airline operation including managing flights, passenger reservations and routes. 
+# Project Title: Airline Booking and Operations System
+A relational database project designed to manage airline operations, passenger bookings, and flight routes while supporting SQL-based analysis of booking activity, fare patterns, and passenger no-show trends.
 
 ## Theme: Airline Booking
 
-  - actor: passangers
-  - producer: flights
-  - event: bookings
-  - catalog: airports
-  - junction: flight_routes
-  - metric: fare_paid
+- Actor: passengers
+- Producer: flights
+- Event: bookings
+- Catalog: airports
+- Junction: flight_routes
+- Metric: fare_paid
 
-What the system does: A relational database for a large-scale application for airline booking
+**What the system does:** The system manages flight information, passenger records, reservations, airport connections, and flight routes while supporting the analysis of booking activity, fare patterns, and passenger no-show rates.
 
 ## Domain Overview
 
@@ -30,6 +30,7 @@ The database also supports business performance analysis by identifying booking 
 
 ### ERD diagram source
 
+```dbml
 // Actor: passengers
 Table passengers {
   passenger_id bigint [primary key]
@@ -88,9 +89,11 @@ Ref: passengers.passenger_id < bookings.passenger_id
 Ref: flights.flight_id < bookings.flight_id
 Ref: flights.flight_id < flight_routes.flight_id
 Ref: airports.airport_code < flight_routes.airport_code
+```
 
 ### Updated ERD diagram source (Assignment 2)
 
+```dbml
 // Actor: passengers
 Table passengers {
   passenger_id integer [pk, increment]
@@ -153,6 +156,22 @@ Ref: flights.flight_id < bookings.flight_id
 Ref: flights.flight_id < flight_routes.flight_id
 Ref: airports.airport_code < flight_routes.airport_code
 Ref: passengers.referred_by > passengers.passenger_id
+```
+
+## Schema Design
+
+The following describes the original relational database design developed in Assignments 1 and 2 for flight operations and reservations using PostgreSQL 14+.
+
+* **passengers (actor)**: Stores customer accounts. Uses an auto-generated identity integer key and an enforced UNIQUE constraint on emails, with members referral tracking.
+* **airports (catalog)**: Stores airport information, using the global 3-letter airport codes (CHAR(3)) as the primary key.
+* **flights (producer)**: Stores flight schedules, seat capacity, ticket prices with basic schedule and fare validation.
+* **flight_routes (junction)**: Resolves many-to-many associations between flights and airports. Utilizes a composite primary key (flight_id, airport_code) to prevent duplicate entries.
+* **bookings (event)**: Stores flight reservations and paid fares, keeping a record of passenger ticket history and standard reservation statuses like confirmed or canceled. 
+
+### Key Design Decisions
+* **Protecting Booking History:** Foreign keys on bookings utilize ON DELETE RESTRICT to ensure passenger reservations and payment records are not accidentally deleted, ensuring booking records stay intact.
+* **Automated Cleanup for Schedules:** Deleting a flight automatically removes its associated route stops in flight_routes using ON DELETE CASCADE.
+* **Data Validation Checks:** CHECK constraints on status values, seat capacity, departures/arrival times so invalid data cannot enter the database.
 
 ## Database Schema (DDL)
 
@@ -177,20 +196,7 @@ The reference database consists of six related tables that support airline booki
 
 The `bookings`, `flights`, and `passengers` tables are the primary tables used in the SQL analyses. They support booking volume analysis, fare comparisons, passenger behavior analysis, flight rankings, and passenger no-show monitoring.
 
-## Schema Design
-
-The relational database schema for flight operations and reservations built for PostgreSQL 14+.
-
-* **passengers (actor)**: Stores customer accounts. Uses an auto-generated identity integer key and an enforced UNIQUE constraint on emails, with members referral tracking.
-* **airports (catalog)**: Stores airport information, using the global 3-letter airport codes (CHAR(3)) as the primary key.
-* **flights (producer)**: Stores flight schedules, seat capacity, ticket prices with basic schedule and fare validation.
-* **flight_routes (junction)**: Resolves many-to-many associations between flights and airports. Utilizes a composite primary key (flight_id, airport_code) to prevent duplicate entries.
-* **bookings (event)**: Stores flight reservations and paid fares, keeping a record of passenger ticket history and standard reservation statuses like confirmed or canceled. 
-
-### Key Design Decisions
-* **Protecting Booking History:** Foreign keys on bookings utilize ON DELETE RESTRICT to ensure passenger reservations and payment records are not accidentally deleted, ensuring booking records stay intact.
-* **Automated Cleanup for Schedules:** Deleting a flight automatically removes its associated route stops in flight_routes using ON DELETE CASCADE.
-* **Data Validation Checks:** CHECK constraints on status values, seat capacity, departures/arrival times so invalid data cannot enter the database.
+Throughout the SQL analyses, a passenger no-show is defined as a booking with `cancellation_reason = 'Passenger no show'`. The no-show rate is calculated as the number of recorded passenger no-shows divided by the total number of recorded bookings, multiplied by 100.
 
 ## Query Catalogue
 
@@ -294,47 +300,119 @@ Window functions such as `AVG() OVER`, `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`,
 
 ## Findings and Recommendations
 
+The SQL analyses conducted throughout this project identified several important findings related to passenger no-shows, flight activity, and booking performance.
+
+### 1. Passenger No-show Rates Show Improvement but Remain Inconsistent
+
+**Finding:**
+
+Of the 200 recorded bookings in 2023, 12 were identified as passenger no-shows, resulting in an overall no-show rate of 6.00%.
+
+The quarterly no-show rates were:
+
+| Quarter | No-show Rate |
+| --- | ---: |
+| Q1 | 7.55% |
+| Q2 | 6.25% |
+| Q3 | 5.88% |
+| Q4 | 4.17% |
+
+Although the quarterly no-show rate decreased by 3.38 percentage points from Q1 to Q4, the monthly results showed considerable fluctuations. In December, the no-show rate increased to 12.50% after two consecutive months with no recorded no-shows.
+
+**Business Implication:**
+
+The quarterly results suggest improvement in the observed no-show rate. However, the monthly fluctuations indicate that sustained improvement has not yet been established.
+
+**Recommendation:**
+
+Management should monitor both monthly and quarterly no-show rates, investigate the circumstances surrounding no-show cases, and evaluate preventive measures such as passenger reminders and booking confirmations. The Q4 rate of 4.17% can serve as a preliminary benchmark for the following quarter.
+
+- Supporting queries: [Task 4.2](queries/unit4/q4_2.sql), [Task 6.3](queries/unit6/q6_3.sql)
+
+### 2. Active Flights Without Recorded Bookings
+
+**Finding:**
+
+The database contains 15 flights, but only 13 have recorded bookings. Flight VN214 (Flight ID 14) and Flight VN215 (Flight ID 15) are marked as active despite having no recorded bookings.
+
+These flights were excluded when using an INNER JOIN but were successfully identified using LEFT JOIN, NOT EXISTS, and EXCEPT.
+
+**Business Implication:**
+
+Reports that include only flights with existing bookings may provide an incomplete picture of platform activity. Active flights without bookings may indicate low demand, outdated flight records, or potential configuration issues that require further investigation.
+
+**Recommendation:**
+
+The operations team should review these two flights to determine whether they are available for booking, whether their routes and airport information are configured correctly, and whether their active status remains appropriate. Operational reports should include flights with zero bookings to ensure complete visibility.
+
+- Supporting query: [Task 5.2](queries/unit5/q5_2.sql)
+
+### 3. Booking Volume and Recorded Fares Do Not Always Follow the Same Trend
+
+**Finding:**
+
+In March 2023, booking volume decreased by 47.62%, from 21 to 11 bookings, while total recorded fares decreased by 70.01%.
+
+However, in April, booking volume remained unchanged at 11 bookings, while total recorded fares increased by 91.02%.
+
+**Business Implication:**
+
+Booking volume alone is not sufficient to evaluate financial performance. Changes in recorded fares may reflect differences in pricing, fare composition, or booking characteristics rather than changes in customer demand alone.
+
+**Recommendation:**
+
+Management should monitor booking volume, average fares, and total recorded fares together. Significant month-over-month changes should trigger a review of flight availability, pricing, cancellation records, and potential data quality issues.
+
+- Supporting query: [Task 6.3](queries/unit6/q6_3.sql)
+
+### Detailed Analysis
+
+Additional findings, supporting evidence, and operational recommendations are available in the following documents:
+
+- [Unit 6 Analysis and Reflection](analysis/unit6.md)
+- [Final Findings and Closing Memo](analysis/unit6-finding.md)
+
+
 ## Limitations and Future Improvements
 
+Although the SQL analyses provided useful insights into booking activity, fare patterns, and passenger no-show rates, several limitations should be considered when interpreting the results.
 
-## Unit 4: Booking Fare and No-Show Analysis
+### 1. Limited Data Coverage
 
-Used the same airline booking data from Unit 3. The metric is fare_paid, the actor is passenger_id, and the producer is flight_id. booking_country was used as a region label. For this report, failure means a booking with cancellation_reason = 'Passenger no show'.
+**Limitation:**
 
-- queries/unit4/q4_1.sql: Overall booking and fare summary, actual no-show rate, counts by flight, HAVING, and flight plus country results.
-- queries/unit4/q4_2.sql: Total bookings and no-shows in one query, country subtotals and platform grand total, and a CTE baseline for busy flights.
-- analysis/unit4.md: Explanations for Tasks 4.1 and 4.2 and the reflection.
-- analysis/unit4-finding.md: Main finding and which flight IDs recommended for reviewing.
-- screenshots/unit4: Full screenshots from pgAdmin showing all query and its result together.
+The reference dataset contains only 200 booking records from January through December 2023. Because of the relatively small dataset, even one or two additional passenger no-shows can substantially affect the calculated monthly no-show rate. Although the quarterly results showed improvement, one year of data is not sufficient to establish a sustained long-term trend or identify recurring seasonal patterns.
 
-## Unit 6: Window Functions and Analytics
+**Future Improvement:**
 
-Used the same airline booking data from previous units to analyze individual booking fares, flight popularity, booking patterns, and passenger no-show trends using SQL window functions. The metric is `fare_paid`, the actor is `passenger_id`, and the producer is `flight_id`. As defined in Unit 4, failure means a booking with `cancellation_reason = 'Passenger no show'`.
+Collecting booking records over multiple years would allow management to compare performance across equivalent periods, identify seasonal patterns, and evaluate whether improvements in passenger no-show rates are sustained over time.
 
-### SQL Queries and Analysis
+### 2. Limited Timestamp Information
 
-- [queries/unit6/q6_1.sql](queries/unit6/q6_1.sql): Comparison of individual booking fares with flight averages, comparison of window functions and GROUP BY, flight popularity rankings using ROW_NUMBER, RANK, and DENSE_RANK, and flight grouping using NTILE.
-- [queries/unit6/q6_2.sql](queries/unit6/q6_2.sql): Comparison of consecutive booking fares using LAG and LEAD, running fare totals, moving averages, revenue target progress, and detection of booking gaps.
-- [queries/unit6/q6_3.sql](queries/unit6/q6_3.sql): Top three booking fares per flight, month-over-month booking and fare comparisons, monthly and quarterly passenger no-show rates, and data coverage analysis.
-- [analysis/unit6.md](analysis/unit6.md): Explanations, query results, business interpretations, and write-ups for Tasks 6.1, 6.2, and 6.3, including the supporting analyses and reflection.
-- [analysis/unit6-finding.md](analysis/unit6-finding.md): Closing memo for Task 6.4, including passenger no-show trends, data limitations, supporting evidence, and recommendations for the next quarter.
-- [screenshots/unit6](screenshots/unit6): Screenshots from pgAdmin showing the executed SQL queries and their results.
+**Limitation:**
 
-### Key Findings
+The `booked_at` column represents the time a reservation was created rather than the scheduled departure time or the actual time a passenger failed to show up. Therefore, the monthly and quarterly no-show analyses reflect booking creation periods rather than the periods in which the no-show events actually occurred.
 
-- Window functions preserved all 200 individual booking records, while GROUP BY returned only 13 flight-level summary rows.
-- A total of 12 passenger no-shows were identified across 200 bookings, resulting in an overall recorded no-show rate of 6.00%.
-- The quarterly passenger no-show rate decreased from 7.55% in Q1 to 4.17% in Q4, suggesting improvement at the quarterly level.
-- Monthly no-show rates remained inconsistent, including an increase to 12.50% in December after two months without recorded no-shows.
-- The limited sample size and historical coverage prevent a definitive conclusion about sustained improvement.
+**Future Improvement:**
 
-### Recommendations for the Next Quarter
+Adding scheduled departure timestamps, actual departure timestamps, and no-show event timestamps would support more accurate operational reporting. These additional fields would also allow management to analyze the relationship between booking lead time and passenger no-show rates.
 
-- Monitor monthly and quarterly passenger no-show rates.
-- Investigate recurring passenger no-show cases and test preventive measures.
-- Expand historical data coverage and improve the collection of flight departure and no-show occurrence timestamps.
+### 3. Limited Information About Operational Causes
 
-Additional findings, supporting SQL queries, and detailed recommendations are available in the [Unit 6 Closing Memo](analysis/unit6-finding.md).
+**Limitation:**
+
+The current dataset allows the identification of unusual patterns, such as active flights without bookings, extended booking activity gaps, and significant changes in recorded fares. However, it does not provide sufficient information to determine the underlying causes of these patterns.
+
+**Future Improvement:**
+
+Additional data, including flight schedules, booking availability, pricing and promotion history, cancellation details, and booking system logs, would help distinguish between changes in customer demand, operational disruptions, configuration issues, and data quality problems.
+
+These improvements would support more reliable analysis, stronger operational recommendations, and better-informed business decisions.
+
+For additional discussion of data coverage and analytical limitations, see:
+
+- [Unit 6 Analysis and Reflection](analysis/unit6.md)
+- [Final Findings and Closing Memo](analysis/unit6-finding.md)
 
 ## Final Project Video Presentation
 
@@ -373,3 +451,45 @@ psql -d ex603_airline -f queries/unit6/q6_1.sql
 ```
 
 Other SQL queries can be executed by replacing the file path with the desired query file.
+
+## Unit-Specific Documentation
+### Unit 4: Booking Fare and No-Show Analysis
+
+Used the same airline booking data from Unit 3. The metric is fare_paid, the actor is passenger_id, and the producer is flight_id. booking_country was used as a region label. For this report, failure means a booking with cancellation_reason = 'Passenger no show'.
+
+#### SQL Queries and Analysis
+
+- [queries/unit4/q4_1.sql](queries/unit4/q4_1.sql): Overall booking and fare summary, booking counts by flight, HAVING, and flight and regional analysis.
+- [queries/unit4/q4_2.sql](queries/unit4/q4_2.sql): Total bookings and no-shows in one query, country subtotals, platform grand total, and a CTE baseline for flights with at least 10 bookings.
+- [analysis/unit4.md](analysis/unit4.md): Explanations for Tasks 4.1 and 4.2, query results, and reflection.
+- [analysis/unit4-finding.md](analysis/unit4-finding.md): Main findings and recommended flights for further investigation.
+- [screenshots/unit4](screenshots/unit4): pgAdmin screenshots showing SQL queries and their corresponding results.
+
+### Unit 6: Window Functions and Analytics
+
+Used the same airline booking data from previous units to analyze individual booking fares, flight popularity, booking patterns, and passenger no-show trends using SQL window functions. The metric is `fare_paid`, the actor is `passenger_id`, and the producer is `flight_id`. As defined in Unit 4, failure means a booking with `cancellation_reason = 'Passenger no show'`.
+
+#### SQL Queries and Analysis
+
+- [queries/unit6/q6_1.sql](queries/unit6/q6_1.sql): Comparison of individual booking fares with flight averages, comparison of window functions and GROUP BY, flight popularity rankings using ROW_NUMBER, RANK, and DENSE_RANK, and flight grouping using NTILE.
+- [queries/unit6/q6_2.sql](queries/unit6/q6_2.sql): Comparison of consecutive booking fares using LAG and LEAD, running fare totals, moving averages, revenue target progress, and detection of booking gaps.
+- [queries/unit6/q6_3.sql](queries/unit6/q6_3.sql): Top three booking fares per flight, month-over-month booking and fare comparisons, monthly and quarterly passenger no-show rates, and data coverage analysis.
+- [analysis/unit6.md](analysis/unit6.md): Explanations, query results, business interpretations, and write-ups for Tasks 6.1, 6.2, and 6.3, including the supporting analyses and reflection.
+- [analysis/unit6-finding.md](analysis/unit6-finding.md): Closing memo for Task 6.4, including passenger no-show trends, data limitations, supporting evidence, and recommendations for the next quarter.
+- [screenshots/unit6](screenshots/unit6): Screenshots from pgAdmin showing the executed SQL queries and their results.
+
+#### Key Findings
+
+- Window functions preserved all 200 individual booking records, while GROUP BY returned only 13 flight-level summary rows.
+- A total of 12 passenger no-shows were identified across 200 bookings, resulting in an overall recorded no-show rate of 6.00%.
+- The quarterly passenger no-show rate decreased from 7.55% in Q1 to 4.17% in Q4, suggesting improvement at the quarterly level.
+- Monthly no-show rates remained inconsistent, including an increase to 12.50% in December after two months without recorded no-shows.
+- The limited sample size and historical coverage prevent a definitive conclusion about sustained improvement.
+
+#### Recommendations for the Next Quarter
+
+- Monitor monthly and quarterly passenger no-show rates.
+- Investigate recurring passenger no-show cases and test preventive measures.
+- Expand historical data coverage and improve the collection of flight departure and no-show occurrence timestamps.
+
+Additional findings, supporting SQL queries, and detailed recommendations are available in the [Unit 6 Closing Memo](analysis/unit6-finding.md).
