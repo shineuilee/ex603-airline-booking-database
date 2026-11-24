@@ -176,3 +176,32 @@ Used the same airline booking data from Unit 3. The metric is fare_paid, the act
 - analysis/unit4.md: Explanations for Tasks 4.1 and 4.2 and the reflection.
 - analysis/unit4-finding.md: Main finding and which flight IDs recommended for reviewing.
 - screenshots/unit4: Full screenshots from pgAdmin showing all query and its result together.
+
+## Unit 6: Window Functions and Analytics
+
+Used the same airline booking data from previous units to analyze individual booking fares, flight popularity, booking patterns, and passenger no-show trends using SQL window functions. The metric is `fare_paid`, the actor is `passenger_id`, and the producer is `flight_id`. As defined in Unit 4, failure means a booking with `cancellation_reason = 'Passenger no show'`.
+
+### SQL Queries and Analysis
+
+- [queries/unit6/q6_1.sql](queries/unit6/q6_1.sql): Comparison of individual booking fares with flight averages, comparison of window functions and GROUP BY, flight popularity rankings using ROW_NUMBER, RANK, and DENSE_RANK, and flight grouping using NTILE.
+- [queries/unit6/q6_2.sql](queries/unit6/q6_2.sql): Comparison of consecutive booking fares using LAG and LEAD, running fare totals, moving averages, revenue target progress, and detection of booking gaps.
+- [queries/unit6/q6_3.sql](queries/unit6/q6_3.sql): Top three booking fares per flight, month-over-month booking and fare comparisons, monthly and quarterly passenger no-show rates, and data coverage analysis.
+- [analysis/unit6.md](analysis/unit6.md): Explanations, query results, business interpretations, and write-ups for Tasks 6.1, 6.2, and 6.3, including the supporting analyses and reflection.
+- [analysis/unit6-finding.md](analysis/unit6-finding.md): Closing memo for Task 6.4, including passenger no-show trends, data limitations, supporting evidence, and recommendations for the next quarter.
+- [screenshots/unit6](screenshots/unit6): Screenshots from pgAdmin showing the executed SQL queries and their results.
+
+### Key Findings
+
+- Window functions preserved all 200 individual booking records, while GROUP BY returned only 13 flight-level summary rows.
+- A total of 12 passenger no-shows were identified across 200 bookings, resulting in an overall recorded no-show rate of 6.00%.
+- The quarterly passenger no-show rate decreased from 7.55% in Q1 to 4.17% in Q4, suggesting improvement at the quarterly level.
+- Monthly no-show rates remained inconsistent, including an increase to 12.50% in December after two months without recorded no-shows.
+- The limited sample size and historical coverage prevent a definitive conclusion about sustained improvement.
+
+### Recommendations for the Next Quarter
+
+- Monitor monthly and quarterly passenger no-show rates.
+- Investigate recurring passenger no-show cases and test preventive measures.
+- Expand historical data coverage and improve the collection of flight departure and no-show occurrence timestamps.
+
+Additional findings, supporting SQL queries, and detailed recommendations are available in the [Unit 6 Closing Memo](analysis/unit6-finding.md).
