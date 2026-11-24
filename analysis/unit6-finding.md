@@ -25,9 +25,8 @@ February, April, October, and November had no recorded passenger no-shows. Howev
 
 These results indicate that the absence of no-shows in a particular month does not necessarily demonstrate sustained improvement. Because monthly booking volumes are relatively small, even one or two additional no-show cases can significantly affect the monthly rate.
 
-**Query Evidence:** 
-- [q6_3.sql](../queries/unit6/q6_3.sql) — Supporting Analysis 1: Monthly Passenger No-show Rate.
-- [Monthly No-show Rate Results](../screenshots/unit6/6_3_support_monthly_no_show_rate.png)
+**Query Evidence:** [q6_3.sql](../queries/unit6/q6_3.sql) — Supporting Analysis 1: Monthly Passenger No-show Rate.
+**Query Result:** [Monthly No-show Rate Results](../screenshots/unit6/6_3_support_monthly_no_show_rate.png)
 
 ### Quarterly Performance
 
@@ -47,9 +46,8 @@ The rate decreased from 7.55% in Q1 to 4.17% in Q4, representing an improvement 
 
 This suggests that the failure problem was improving over the observed period at the quarterly level. However, the December increase demonstrates that short-term fluctuations remain a concern.
 
-**Query Evidence:** 
-- [q6_3.sql](../queries/unit6/q6_3.sql) — Supporting Analysis 2: Quarterly Passenger No-show Rate.
-- [Quarterly No-show Rate Results](../screenshots/unit6/6_3_partB_quarterly_no_show_rate.png)
+**Query Evidence:** [q6_3.sql](../queries/unit6/q6_3.sql) — Supporting Analysis 2: Quarterly Passenger No-show Rate.
+**Query Result:** [Quarterly No-show Rate Results](../screenshots/unit6/6_3_partB_quarterly_no_show_rate.png)
 
 ### Data Limitations
 
@@ -61,9 +59,8 @@ Additionally, the analysis groups bookings by `booked_at`, rather than the actua
 
 The available evidence also does not establish whether any specific operational intervention caused the observed improvement.
 
-**Query Evidence:** 
-- [q6_3.sql](../queries/unit6/q6_3.sql) — Supporting Analyses 1, 2, and 3.
-- [Data Coverage Results](../screenshots/unit6/6_3_partB_data_coverage.png)
+**Query Evidence:** [q6_3.sql](../queries/unit6/q6_3.sql) — Supporting Analyses 1, 2, and 3.
+**Query Result:** [Data Coverage Results](../screenshots/unit6/6_3_partB_data_coverage.png)
 
 ## 2. What Should the Team Do Next Quarter?
 
