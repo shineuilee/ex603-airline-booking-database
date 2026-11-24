@@ -96,7 +96,7 @@ A single booking fare can fluctuate considerably, making it difficult to identif
 
 A smaller window, such as three bookings, would react more quickly to sudden fare changes but would also be more sensitive to individual unusually high or low fares. A larger window, such as 30 bookings, would provide a smoother trend but could delay the detection of recent changes.
 
-It is important to distinguish seven bookings from seven calendar days. Since bookings do not necessarily occur every day, the seven-booking moving average may cover a much longer period than seven days. During the first six bookings, the calculation uses only the available preceding records.
+It is important to distinguish seven bookings from seven calendar days. Since bookings do not necessarily occur every day, the seven-booking moving average may cover a much longer period than seven days. During the first six bookings, the calculation uses the current booking and all available preceding bookings.
 
 #### ROWS versus RANGE
 
