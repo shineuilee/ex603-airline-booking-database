@@ -25,7 +25,7 @@ February, April, October, and November had no recorded passenger no-shows. Howev
 
 These results indicate that the absence of no-shows in a particular month does not necessarily demonstrate sustained improvement. Because monthly booking volumes are relatively small, even one or two additional no-show cases can significantly affect the monthly rate.
 
-**Query Evidence:** [q6_3.sql](../queries/unit6/q6_1.sql) — Supporting Analysis 1: Monthly Passenger No-show Rate.
+**Query Evidence:** [q6_3.sql](../queries/unit6/q6_3.sql) — Supporting Analysis 1: Monthly Passenger No-show Rate.
 
 [Monthly No-show Rate Results](../screenshots/unit6/6_3_support_monthly_no_show_rate.png)
 
@@ -47,7 +47,7 @@ The rate decreased from 7.55% in Q1 to 4.17% in Q4, representing an improvement 
 
 This suggests that the failure problem was improving over the observed period at the quarterly level. However, the December increase demonstrates that short-term fluctuations remain a concern.
 
-**Query Evidence:** [q6_3.sql](../queries/unit6/q6_1.sql) — Supporting Analysis 2: Quarterly Passenger No-show Rate.
+**Query Evidence:** [q6_3.sql](../queries/unit6/q6_3.sql) — Supporting Analysis 2: Quarterly Passenger No-show Rate.
 
 [Quarterly No-show Rate Results](../screenshots/unit6/6_3_partB_quarterly_no_show_rate.png)
 
@@ -61,7 +61,7 @@ Additionally, the analysis groups bookings by `booked_at`, rather than the actua
 
 The available evidence also does not establish whether any specific operational intervention caused the observed improvement.
 
-**Query Evidence:** [q6_3.sql](../queries/unit6/q6_1.sql) — Supporting Analyses 1, 2, and 3.
+**Query Evidence:** [q6_3.sql](../queries/unit6/q6_3.sql) — Supporting Analyses 1, 2, and 3.
 
 [Data Coverage Results](../screenshots/unit6/6_3_partB_data_coverage.png)
 
@@ -75,7 +75,7 @@ Monthly reporting should be used to identify emerging issues, while quarterly re
 
 As a provisional benchmark, the team could aim to maintain a quarterly no-show rate at or below the observed Q4 rate of 4.17%. However, both the number of no-shows and the total number of bookings should be reviewed alongside the rate.
 
-**Supporting Evidence:** [q6_3.sql](../queries/unit6/q6_1.sql) - Supporting Analyses 1 and 2 demonstrated that monthly fluctuations can differ substantially from quarterly trends.
+**Supporting Evidence:** [q6_3.sql](../queries/unit6/q6_3.sql) - Supporting Analyses 1 and 2 demonstrated that monthly fluctuations can differ substantially from quarterly trends.
 
 ### Recommendation 2: Investigate No-show Cases and Test Preventive Measures
 
@@ -85,7 +85,7 @@ Based on the findings, the team could pilot pre-departure reminders or booking c
 
 The current analysis does not establish that communication issues caused the recorded no-shows or that reminders would necessarily prevent them. Therefore, these measures should be tested and evaluated before broader implementation.
 
-**Supporting Evidence:** [q6_3.sql](../queries/unit6/q6_1.sql) - Supporting Analysis 1 identified recurring passenger no-shows, including an increase to 12.50% in December after two months without recorded no-shows.
+**Supporting Evidence:** [q6_3.sql](../queries/unit6/q6_3.sql) - Supporting Analysis 1 identified recurring passenger no-shows, including an increase to 12.50% in December after two months without recorded no-shows.
 
 ### Recommendation 3: Improve Data Collection and Expand Historical Coverage
 
@@ -95,7 +95,7 @@ Additional data would help distinguish sustained improvement from short-term var
 
 The team should also consider reporting no-show rates by flight departure period, rather than relying exclusively on booking creation dates.
 
-**Supporting Evidence:** [q6_3.sql](../queries/unit6/q6_1.sql) - Supporting Analysis 3 confirmed that the available dataset contains only 200 bookings within a single calendar year. Supporting Analyses 1 and 2 identified only 12 recorded passenger no-shows during that period.
+**Supporting Evidence:** [q6_3.sql](../queries/unit6/q6_3.sql) - Supporting Analysis 3 confirmed that the available dataset contains only 200 bookings within a single calendar year. Supporting Analyses 1 and 2 identified only 12 recorded passenger no-shows during that period.
 
 ## Final Conclusion
 
