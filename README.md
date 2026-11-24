@@ -223,7 +223,20 @@ The following catalogue summarizes the SQL queries developed throughout this pro
 | 4.2 Part B | [Regional and Platform-Level Summary](queries/unit4/q4_2.sql) | How do booking volume and no-show rates vary across regions and the platform as a whole? |
 | 4.2 Part C | [No-show Baseline for Busy Flights](queries/unit4/q4_2.sql) | What is the combined passenger no-show rate for flights with at least 10 bookings? |
 
-### Unit 5
+### Unit 5: Joins, Set Operations, and Query Performance
+
+| Task | Query | Business Question |
+| --- | --- | --- |
+| 5.1 Q1 | [Passenger and Flight Booking Details](queries/unit5/q5_1.sql) | Who made each booking, which flight was booked, and what is the booking status? |
+| 5.1 Q2 – Part 1 | [Shared Airport Analysis](queries/unit5/q5_1.sql) | Which airports are associated with Flights 1, 2, and 3, and do these flights share common airports? |
+| 5.1 Q2 – Part 2 | [SGN Airport Flight Analysis](queries/unit5/q5_1.sql) | Which flights are associated with SGN airport, and how do their booking volumes and no-show counts compare? |
+| 5.1 Q3 | [Similar Flight Comparison](queries/unit5/q5_1.sql) | Which other flights have the same seat capacity as the focus flights, and what are their booking volumes and no-show rates? |
+| 5.2 Part A | [LEFT JOIN and INNER JOIN Comparison](queries/unit5/q5_2.sql) | Which flights have no recorded bookings, and how many flights would be excluded by using an INNER JOIN? |
+| 5.2 Part B-1 and B-2 | [LEFT JOIN and RIGHT JOIN Validation](queries/unit5/q5_2.sql) | Can LEFT JOIN and RIGHT JOIN produce equivalent flight booking reports without losing records? |
+| 5.2 Part B-3 | [Matched and Unmatched Records](queries/unit5/q5_2.sql) | Are there flights without bookings or bookings without matching flights? |
+| 5.2 Part C | [Flights Without Bookings](queries/unit5/q5_2.sql) | Which flights have never received a booking, and do NOT EXISTS and EXCEPT identify the same flights? |
+| 5.3 Part A | [Airport and Flight Combinations](queries/unit5/q5_3.sql) | What are all possible airport-flight combinations, and how many rows does the CROSS JOIN generate? |
+| 5.3 Part B | [Query Execution Plan and Performance](queries/unit5/q5_3.sql) | How does PostgreSQL execute the three-table booking query, and how do estimated and actual execution results compare? |
 
 ### Unit 6: Window Functions and Analytics
 
