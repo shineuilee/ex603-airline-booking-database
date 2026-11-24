@@ -27,7 +27,7 @@ These results indicate that the absence of no-shows in a particular month does n
 
 **Query Evidence:** [q6_3.sql](queries/unit6/q6_1.sql) — Supporting Analysis 1: Monthly Passenger No-show Rate.
 
-[Monthly No-show Rate Results](../screenshots/unit6/6_3_partB_monthly_no_show_rate.png)
+[Monthly No-show Rate Results](screenshots/unit6/6_3_support_monthly_no_show_rate.png)
 
 ### Quarterly Performance
 
