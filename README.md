@@ -231,12 +231,16 @@ The following catalogue summarizes the SQL queries developed throughout this pro
 | 5.1 Q2 – Part 1 | [Shared Airport Analysis](queries/unit5/q5_1.sql) | Which airports are associated with Flights 1, 2, and 3, and do these flights share common airports? |
 | 5.1 Q2 – Part 2 | [SGN Airport Flight Analysis](queries/unit5/q5_1.sql) | Which flights are associated with SGN airport, and how do their booking volumes and no-show counts compare? |
 | 5.1 Q3 | [Similar Flight Comparison](queries/unit5/q5_1.sql) | Which other flights have the same seat capacity as the focus flights, and what are their booking volumes and no-show rates? |
-| 5.2 Part A | [LEFT JOIN and INNER JOIN Comparison](queries/unit5/q5_2.sql) | Which flights have no recorded bookings, and how many flights would be excluded by using an INNER JOIN? |
-| 5.2 Part B-1 and B-2 | [LEFT JOIN and RIGHT JOIN Validation](queries/unit5/q5_2.sql) | Can LEFT JOIN and RIGHT JOIN produce equivalent flight booking reports without losing records? |
+| 5.2 Part A-1 | [All Flights Using LEFT JOIN](queries/unit5/q5_2.sql) | How many bookings does each flight have, including flights with no recorded bookings? |
+| 5.2 Part A-2 | [Flights with Bookings Using INNER JOIN](queries/unit5/q5_2.sql) | Which flights have at least one recorded booking, and how many bookings does each have? |
+| 5.2 Part A-3 and A-4 | [Excluded Flight Analysis](queries/unit5/q5_2.sql) | How many flights are excluded by INNER JOIN, and which specific flights are excluded? |
+| 5.2 Part B-1 and B-2 | [RIGHT JOIN and Result Validation](queries/unit5/q5_2.sql) | Can RIGHT JOIN produce the same booking report as LEFT JOIN, and how can the equivalence be verified? |
 | 5.2 Part B-3 | [Matched and Unmatched Records](queries/unit5/q5_2.sql) | Are there flights without bookings or bookings without matching flights? |
-| 5.2 Part C | [Flights Without Bookings](queries/unit5/q5_2.sql) | Which flights have never received a booking, and do NOT EXISTS and EXCEPT identify the same flights? |
-| 5.3 Part A | [Airport and Flight Combinations](queries/unit5/q5_3.sql) | What are all possible airport-flight combinations, and how many rows does the CROSS JOIN generate? |
-| 5.3 Part B | [Query Execution Plan and Performance](queries/unit5/q5_3.sql) | How does PostgreSQL execute the three-table booking query, and how do estimated and actual execution results compare? |
+| 5.2 Part C-1 and C-2 | [Flights Without Bookings Using NOT EXISTS and EXCEPT](queries/unit5/q5_2.sql) | Which flights have no recorded bookings, and how can they be identified using two different SQL approaches? |
+| 5.2 Part C-3 | [NOT EXISTS and EXCEPT Validation](queries/unit5/q5_2.sql) | Do NOT EXISTS and EXCEPT identify the same flights without bookings? |
+| 5.3 Part A-1 and A-2 | [CROSS JOIN and Row Count Validation](queries/unit5/q5_3.sql) | What are all possible airport-flight combinations, and does the resulting row count match the expected Cartesian product? |
+| 5.3 Part B-1 | [Estimated Query Execution Plan](queries/unit5/q5_3.sql) | How does PostgreSQL plan to execute the three-table booking query? |
+| 5.3 Part B-2 | [Actual Query Execution Performance](queries/unit5/q5_3.sql) | How does the actual query execution performance compare with the estimated execution plan? |
 
 ### Unit 6: Window Functions and Analytics
 
@@ -255,6 +259,38 @@ The following catalogue summarizes the SQL queries developed throughout this pro
 | Supporting Analysis 3 | [Data Coverage](queries/unit6/q6_3.sql) | What historical data is available, and is it sufficient to assess sustained improvement? |
 
 ## Technical Highlights
+
+Throughout this project, several SQL techniques were applied to improve reporting accuracy, organize complex queries, and support business decision-making.
+
+### 1. NULL Handling
+
+NULL handling was used to prevent records from being unintentionally excluded from query results. In Unit 3, a query using an inequality condition on `cancellation_reason` incorrectly excluded rows containing NULL values. Adding an `IS NULL` condition corrected the booking count. This technique was important for maintaining accurate and reliable reports.
+
+- Related query: [Task 3.2](queries/unit3/q3_2.sql)
+
+### 2. Aggregations and Conditional Aggregation
+
+Aggregate functions such as `COUNT()`, `SUM()`, and `AVG()` were used to summarize booking volume, fares, and passenger no-show rates. Conditional aggregation using `CASE` allowed total bookings and no-shows to be calculated within a single grouped query. This made it easier to compare flight performance and identify flights that may require further investigation.
+
+- Related queries: [Task 4.1](queries/unit4/q4_1.sql), [Task 4.2](queries/unit4/q4_2.sql)
+
+### 3. Common Table Expressions (CTEs)
+
+CTEs were used to break complex queries into smaller and more manageable steps. For example, flight-level booking and no-show counts were calculated first before determining the overall no-show baseline for flights with at least 10 bookings. CTEs improved query readability, maintainability, and the ability to validate intermediate results.
+
+- Related queries: [Task 4.2](queries/unit4/q4_2.sql), [Task 6.3](queries/unit6/q6_3.sql)
+
+### 4. JOINs
+
+Different types of JOINs were used to connect passengers, bookings, flights, and airports. In particular, comparing `INNER JOIN` and `LEFT JOIN` demonstrated how flights without bookings could be unintentionally excluded from operational reports. Using the appropriate JOIN type helped maintain complete and accurate reporting.
+
+- Related queries: [Task 5.1](queries/unit5/q5_1.sql), [Task 5.2](queries/unit5/q5_2.sql)
+
+### 5. Window Functions
+
+Window functions such as `AVG() OVER`, `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `LAG()`, and `LEAD()` were used to perform advanced analytical calculations without collapsing individual rows. These functions supported fare comparisons, flight rankings, running totals, moving averages, and period-over-period analysis. They were particularly useful for evaluating changes in passenger no-show rates over time and supporting operational recommendations.
+
+- Related queries: [Task 6.1](queries/unit6/q6_1.sql), [Task 6.2](queries/unit6/q6_2.sql), [Task 6.3](queries/unit6/q6_3.sql)
 
 ## Findings and Recommendations
 
