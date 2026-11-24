@@ -1,14 +1,15 @@
 -- =============================================================================
 -- EX603 - Project Assignment 4: From Rows to Insight
--- Task 4.1: Measure the platform
+-- Task 4.2: Build the breakdown leadership asked for
 -- Dataset: airline.sql 
 -- =============================================================================
 
 -------------------------------------------------------------------
--- Task 4.2.Part A: How many bookings and no-shows per flight?
--- What is the total volume, cancellation count, cancellation rate (failure rate %), 
--- and completed revenue for each flight (producer) computed in a single table pass?
--- Both counts come from one grouped query with CASE.
+-- Task 4.2 Part A: How many bookings and no-shows per flight?
+-- What are the total booking count, passenger no-show count,
+-- and no-show rate (failure rate %) for each flight (producer)?
+-- All three metrics are calculated in a single grouped query
+-- using COUNT and conditional aggregation with CASE.
 -- -----------------------------------------------------------------------------
 
 SELECT
